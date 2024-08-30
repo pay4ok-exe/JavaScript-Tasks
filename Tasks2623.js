@@ -3,17 +3,18 @@
  * @return {Function}
  */
 function memoize(fn) {
-    let count = 0;
-    let mem = new Map();
+    const mem = new Map();
     return function(...args) {
-        const key = JSON.stringify(...args);
-        if(mem.has(key)){
-            return mem.get(key)
+
+        if(!mem.has(JSON.stringify(args))){
+            const val = fn(...args);
+            mem.set(JSON.stringify(args), val);
+            return val;
         }
-        count++;
-        const val = fn(...args);
-        mem.set(key, val);
-        return val;
+        else{
+            return mem.get(JSON.stringify(args))
+        }
+        
     }
 }
 
